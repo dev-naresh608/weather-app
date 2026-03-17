@@ -1,0 +1,59 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+    <div class="app">
+      <div class="header">
+        <p class="header-label">Real-time data</p>
+        <h1>Weather</h1>
+      </div>
+
+      <div class="search-box">
+        <input id="cityInput" class="search-input" type="text" placeholder="Enter city name…" autocomplete="off" />
+        <button id="searchButton" class="search-btn">Search</button>
+      </div>
+
+      <div class="loading" id="loading">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <div class="error" id="errorBox">City not found. Please try again.</div>
+
+      <div class="weather-card" id="weatherCard">
+        <div class="card-top">
+          <div class="city-name" id="cityNameEl">—</div>
+          <div class="region-name" id="regionEl">—</div>
+        </div>
+        <div class="temp-display">
+          <div class="weather-icon" id="weatherIcon">🌤️</div>
+          <div style="display:flex; align-items:flex-start; gap:0.1rem;">
+            <div class="temp-value" id="tempEl">—</div>
+            <div class="temp-unit">°C</div>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <div class="time-block">
+            <div class="label">Local Time</div>
+            <div class="value" id="timeEl">—</div>
+          </div>
+          <div class="live-badge">
+            <div class="live-dot"></div>
+            Live
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>

@@ -1,0 +1,305 @@
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg: #0a0e17;
+        --surface: #111827;
+        --card: #161d2e;
+        --border: rgba(255,255,255,0.07);
+        --accent: #4fc3f7;
+        --accent-glow: rgba(79, 195, 247, 0.3);
+        --text: #e8edf5;
+        --muted: #5a6882;
+        --warm: #ffd166;
+      }
+
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        overflow: hidden;
+      }
+
+      /* Atmospheric background */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 60% 50% at 20% 20%, rgba(79,195,247,0.06) 0%, transparent 60%),
+          radial-gradient(ellipse 50% 60% at 80% 80%, rgba(99,102,241,0.05) 0%, transparent 60%);
+        pointer-events: none;
+      }
+
+      /* Stars */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.4) 0%, transparent 100%),
+          radial-gradient(1px 1px at 72% 14%, rgba(255,255,255,0.3) 0%, transparent 100%),
+          radial-gradient(1px 1px at 45% 60%, rgba(255,255,255,0.25) 0%, transparent 100%),
+          radial-gradient(1px 1px at 88% 45%, rgba(255,255,255,0.35) 0%, transparent 100%),
+          radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+          radial-gradient(1px 1px at 62% 88%, rgba(255,255,255,0.3) 0%, transparent 100%),
+          radial-gradient(1px 1px at 5% 55%, rgba(255,255,255,0.25) 0%, transparent 100%),
+          radial-gradient(1px 1px at 93% 72%, rgba(255,255,255,0.2) 0%, transparent 100%);
+        pointer-events: none;
+      }
+
+      .app {
+        width: 100%;
+        max-width: 440px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Header */
+      .header {
+        margin-bottom: 2rem;
+        animation: fadeDown 0.6s ease both;
+      }
+
+      .header-label {
+        font-size: 0.7rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.25rem;
+        opacity: 0.8;
+      }
+
+      .header h1 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 3.5rem;
+        line-height: 1;
+        letter-spacing: 0.04em;
+        background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Search */
+      .search-box {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        animation: fadeDown 0.6s 0.1s ease both;
+      }
+
+      .search-input {
+        flex: 1;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.85rem 1.1rem;
+        color: var(--text);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .search-input::placeholder { color: var(--muted); }
+
+      .search-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+
+      .search-btn {
+        background: var(--accent);
+        color: var(--bg);
+        border: none;
+        border-radius: 12px;
+        padding: 0.85rem 1.4rem;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+        white-space: nowrap;
+        box-shadow: 0 4px 20px var(--accent-glow);
+      }
+
+      .search-btn:hover {
+        background: #81d4fa;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 28px rgba(79,195,247,0.45);
+      }
+
+      .search-btn:active { transform: translateY(0); }
+
+      /* Loading */
+      .loading {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 2rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .loading.show { display: flex; }
+
+      .dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+      .dot:nth-child(2) { animation-delay: 0.2s; }
+      .dot:nth-child(3) { animation-delay: 0.4s; }
+
+      /* Error */
+      .error {
+        display: none;
+        background: rgba(239,68,68,0.1);
+        border: 1px solid rgba(239,68,68,0.25);
+        border-radius: 12px;
+        padding: 0.9rem 1.1rem;
+        font-size: 0.88rem;
+        color: #fca5a5;
+        animation: fadeIn 0.3s ease;
+      }
+      .error.show { display: block; }
+
+      /* Weather Card */
+      .weather-card {
+        display: none;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        overflow: hidden;
+        animation: cardReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04) inset;
+      }
+
+      .weather-card.show { display: block; }
+
+      .card-top {
+        padding: 1.8rem 1.8rem 1.4rem;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+        background: linear-gradient(135deg, rgba(79,195,247,0.04) 0%, transparent 60%);
+      }
+
+      .city-name {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 2.2rem;
+        letter-spacing: 0.06em;
+        line-height: 1;
+        color: #fff;
+        margin-bottom: 0.3rem;
+      }
+
+      .region-name {
+        font-size: 0.8rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      /* Big temp */
+      .temp-display {
+        padding: 1.6rem 1.8rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .weather-icon {
+        font-size: 3.5rem;
+        line-height: 1;
+        filter: drop-shadow(0 4px 12px rgba(255,209,102,0.3));
+      }
+
+      .temp-value {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 5rem;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        color: #fff;
+      }
+
+      .temp-unit {
+        font-size: 1.6rem;
+        color: var(--accent);
+        align-self: flex-start;
+        margin-top: 0.4rem;
+        font-family: 'Bebas Neue', sans-serif;
+      }
+
+      /* Time row */
+      .card-bottom {
+        padding: 1.2rem 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .time-block .label {
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.2rem;
+      }
+
+      .time-block .value {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      .live-badge {
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .live-dot {
+        width: 6px; height: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+        animation: livePulse 2s ease infinite;
+        box-shadow: 0 0 6px var(--accent);
+      }
+
+      /* Keyframes */
+      @keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-16px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
+      @keyframes cardReveal {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to   { opacity: 1; transform: scale(1) translateY(0); }
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 0.3; transform: scale(0.8); }
+        50%       { opacity: 1; transform: scale(1.2); }
+      }
+
+      @keyframes livePulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+      }
